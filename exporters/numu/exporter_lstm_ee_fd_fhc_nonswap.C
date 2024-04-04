@@ -60,7 +60,12 @@ const std::vector<std::pair<std::string, Var>> TRUTH_VAR_DEFS({
     { "trueHadE",
       Var(
           [] (const caf::SRProxy *sr) -> double
-          { return sr->mc.nu[0].E - sr->mc.nu[0].prim[0].p.E; }
+          { return sr->mc.nu[0].E - sr->mc.nu[0].prim[0].p.E;}
+      ) },
+      "trueHadE_NoRemnants",
+      Var(
+          [] (const caf::SRProxy *sr) -> double
+          { return sr->mc.nu[0].E - sr->mc.nu[0].prim[0].p.E - sr->mc.nu[0].prim[sr->mc.nu[0].prim.size()-1].p.E; }
       ) },
     { "trueTotMomX_all",
       Var(
@@ -68,7 +73,10 @@ const std::vector<std::pair<std::string, Var>> TRUTH_VAR_DEFS({
           { double sum_momentum_x = 0.0;
             for (const auto& particle_i : sr->mc.nu.@prim.size())
                 {
-                    sum_momentum_x += mc.nu.prim[particle_i].p.px;
+                    if (abs(mc.nu.prim[particle_i].pdg) < 1000000000 /*&& MAKE SURE ONLY FS PARTICLE*/  /*not a nucleus*/)
+                        {
+                          sum_momentum_x += mc.nu.prim[particle_i].p.px;
+                        }
                 }
             return sum_momentum_x;
           }
@@ -79,7 +87,10 @@ const std::vector<std::pair<std::string, Var>> TRUTH_VAR_DEFS({
           { double sum_momentum_y = 0.0;
             for (const auto& particle_i : sr->mc.nu.@prim.size())
                 {
-                    sum_momentum_y += mc.nu.prim[particle_i].p.py;
+                    if (abs(mc.nu.prim[particle_i].pdg) < 1000000000 /*not a nucleus*/)
+                        {
+                          sum_momentum_y += mc.nu.prim[particle_i].p.py;
+                        }
                 }
             return sum_momentum_y;
           }
@@ -90,7 +101,10 @@ const std::vector<std::pair<std::string, Var>> TRUTH_VAR_DEFS({
           { double sum_momentum_z = 0.0;
             for (const auto& particle_i : sr->mc.nu.@prim.size())
                 {
-                    sum_momentum_z += mc.nu.prim[particle_i].p.pz;
+                    if (abs(mc.nu.prim[particle_i].pdg) < 1000000000 /*not a nucleus*/)
+                        {
+                          sum_momentum_z += mc.nu.prim[particle_i].p.pz;
+                        }
                 }
             return sum_momentum_z;
           }
@@ -101,7 +115,7 @@ const std::vector<std::pair<std::string, Var>> TRUTH_VAR_DEFS({
           { double sum_momentum_x_no_neutrons = 0.0;
             for (const auto& particle_i : sr->mc.nu.@prim.size())
                 {
-                    if (mc.nu.prim[particle_i].pdg != 2112 /*neutron*/)
+                    if (mc.nu.prim[particle_i].pdg != 2112 /*neutron*/ && abs(mc.nu.prim[particle_i].pdg) < 1000000000 /*not a nucleus*/)
                         {
                             sum_momentum_x_no_neutrons += mc.nu.prim[particle_i].p.px;
                         }   
@@ -115,7 +129,7 @@ const std::vector<std::pair<std::string, Var>> TRUTH_VAR_DEFS({
           { double sum_momentum_y_no_neutrons = 0.0;
             for (const auto& particle_i : sr->mc.nu.@prim.size())
                 {
-                    if (mc.nu.prim[particle_i].pdg != 2112 /*neutron*/)
+                    if (mc.nu.prim[particle_i].pdg != 2112 /*neutron*/ && abs(mc.nu.prim[particle_i].pdg) < 1000000000 /*not a nucleus*/)
                         {
                             sum_momentum_y_no_neutrons += mc.nu.prim[particle_i].p.py;
                         }   
@@ -129,7 +143,7 @@ const std::vector<std::pair<std::string, Var>> TRUTH_VAR_DEFS({
           { double sum_momentum_z_no_neutrons = 0.0;
             for (const auto& particle_i : sr->mc.nu.@prim.size())
                 {
-                    if (mc.nu.prim[particle_i].pdg != 2112 /*neutron*/)
+                    if (mc.nu.prim[particle_i].pdg != 2112 /*neutron*/ && abs(mc.nu.prim[particle_i].pdg) < 1000000000 /*not a nucleus*/)
                         {
                             sum_momentum_z_no_neutrons += mc.nu.prim[particle_i].p.pz;
                         }   
