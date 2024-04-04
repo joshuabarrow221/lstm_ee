@@ -61,8 +61,82 @@ const std::vector<std::pair<std::string, Var>> TRUTH_VAR_DEFS({
       Var(
           [] (const caf::SRProxy *sr) -> double
           { return sr->mc.nu[0].E - sr->mc.nu[0].prim[0].p.E; }
-      )
-    }
+      ) },
+    { "trueTotMomX_all",
+      Var(
+          [] (const caf::SRProxy *sr) -> double
+          { double sum_momentum_x = 0.0;
+            for (const auto& particle_i : sr->mc.nu.@prim.size())
+                {
+                    sum_momentum_x += mc.nu.prim[particle_i].p.px;
+                }
+            return sum_momentum_x;
+          }
+      ) },
+    { "trueTotMomY_all",
+      Var(
+          [] (const caf::SRProxy *sr) -> double
+          { double sum_momentum_y = 0.0;
+            for (const auto& particle_i : sr->mc.nu.@prim.size())
+                {
+                    sum_momentum_y += mc.nu.prim[particle_i].p.py;
+                }
+            return sum_momentum_y;
+          }
+      ) },
+    { "trueTotMomZ_all",
+      Var(
+          [] (const caf::SRProxy *sr) -> double
+          { double sum_momentum_z = 0.0;
+            for (const auto& particle_i : sr->mc.nu.@prim.size())
+                {
+                    sum_momentum_z += mc.nu.prim[particle_i].p.pz;
+                }
+            return sum_momentum_z;
+          }
+      ) },
+    { "trueTotMomX_no_neutrons",
+      Var(
+          [] (const caf::SRProxy *sr) -> double
+          { double sum_momentum_x_no_neutrons = 0.0;
+            for (const auto& particle_i : sr->mc.nu.@prim.size())
+                {
+                    if (mc.nu.prim[particle_i].pdg != 2112 /*neutron*/)
+                        {
+                            sum_momentum_x_no_neutrons += mc.nu.prim[particle_i].p.px;
+                        }   
+                }
+            return sum_momentum_x_no_neutrons;
+          }
+      ) },
+    { "trueTotMomY_no_neutrons",
+      Var(
+          [] (const caf::SRProxy *sr) -> double
+          { double sum_momentum_y_no_neutrons = 0.0;
+            for (const auto& particle_i : sr->mc.nu.@prim.size())
+                {
+                    if (mc.nu.prim[particle_i].pdg != 2112 /*neutron*/)
+                        {
+                            sum_momentum_y_no_neutrons += mc.nu.prim[particle_i].p.py;
+                        }   
+                }
+            return sum_momentum_y_no_neutrons;
+          }
+      ) },
+    { "trueTotMomZ_no_neutrons",
+      Var(
+          [] (const caf::SRProxy *sr) -> double
+          { double sum_momentum_z_no_neutrons = 0.0;
+            for (const auto& particle_i : sr->mc.nu.@prim.size())
+                {
+                    if (mc.nu.prim[particle_i].pdg != 2112 /*neutron*/)
+                        {
+                            sum_momentum_z_no_neutrons += mc.nu.prim[particle_i].p.pz;
+                        }   
+                }
+            return sum_momentum_z_no_neutrons;
+          }
+      ) },
 });
 
 const std::vector<std::pair<std::string, Var>> RECO_VAR_DEFS({
