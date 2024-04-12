@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "exporter_lstm_ee_fd_fhc_nonswap.C": "cpp"
+        "exporter_lstm_ee_fd_fhc_nonswap.C": "cpp",
+        "HistosandPrintGHepRecordToTxt_COUPP.C": "cpp",
+        "numubar_xsecsprintout_fluxconvolution_COUPP.C": "cpp"
     }
 }
